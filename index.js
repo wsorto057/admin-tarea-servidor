@@ -9,6 +9,8 @@ const app = express();
 // Conectar a la base de datos
 conectarDB();
 
+// Habilitar cors
+app.use(cors());
 
 // Habilitar express.json
 app.use(express.json({ extended: true }));
@@ -18,32 +20,13 @@ const host=process.env.HOST || '0.0.0.0';
 const port = process.env.port || 4000;
 
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "https://ecstatic-ritchie-9df38a.netlify.app/");
+  res.header("Access-Control-Allow-Origin", "*");
   res.header(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept"
   );
   next();
 });
-
-//definicion de dominio para recibir peticiones
-const whitelist=[process.env.FRONTEND_URL];
-const corsOptions={
-    origin: (origin, callback)=>{
-        //revisar si la peticion esta en lista blanca
-        const extiste= whitelist.some(dominio=> dominio===origin);
-        if(existe){
-            callback(null, true);
-        } else{
-            callback(new Error('no permitido por CORS'));
-        }
-
-    }
-}
-
-
-// Habilitar cors
-app.use(cors(corsOptions));
 
 
 // Importar rutas
@@ -58,6 +41,11 @@ app.get("/", (req, res) => {
 });
 
 // Arrancar el servidor
+/* app.listen(port, host, () => {
+  console.log(`El servidor esta funcionando en el puerto ${port}`);
+});
+ */
+
 app.listen(port, host, () => {
-  console.log('servidor funcionando');
+  console.log('Servidor Funcionando');
 });
