@@ -19,7 +19,7 @@ app.use(express.json({ extended: true }));
 const port = process.env.port || 4000;
 
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Origin", "https://ecstatic-ritchie-9df38a.netlify.app/");
   res.header(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept"
@@ -27,6 +27,20 @@ app.use(function(req, res, next) {
   next();
 });
 
+//definicion de dominio para recibir peticiones
+const whitelist=[process.env.FRONTEND_URL];
+const corsOptions={
+    origin: (origin, callback)=>{
+        //revisar si la peticion esta en lista blanca
+        const extiste= whitelist.some(dominio=> dominio===origin);
+        if(existe){
+            callback(null, true);
+        } else{
+            callback(new Error('no permitido por CORS'));
+        }
+
+    }
+}
 
 
 // Importar rutas
