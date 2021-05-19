@@ -9,13 +9,12 @@ const app = express();
 // Conectar a la base de datos
 conectarDB();
 
-// Habilitar cors
-app.use(cors());
 
 // Habilitar express.json
 app.use(express.json({ extended: true }));
 
 // Puerto de la app
+const host=process.env.HOST || '0.0.0.0';
 const port = process.env.port || 4000;
 
 app.use(function(req, res, next) {
@@ -43,6 +42,10 @@ const corsOptions={
 }
 
 
+// Habilitar cors
+app.use(cors(corsOptions));
+
+
 // Importar rutas
 app.use("/api/usuarios", require("./routes/usuarios"));
 app.use("/api/auth", require("./routes/auth"));
@@ -55,6 +58,6 @@ app.get("/", (req, res) => {
 });
 
 // Arrancar el servidor
-app.listen(port, '0.0.0.0', () => {
-  console.log(`El servidor esta funcionando en el puerto ${port}`);
+app.listen(port, host, () => {
+  console.log('servidor funcionando');
 });
