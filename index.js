@@ -1,6 +1,7 @@
 const express = require("express");
 const conectarDB = require("./config/db");
 const cors = require("cors");
+require('dotenv').config({path: 'variables.env'});
 
 // Crear el servidor
 const app = express();
@@ -16,6 +17,17 @@ app.use(express.json({ extended: true }));
 
 // Puerto de la app
 const port = process.env.port || 4000;
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
+
+
 
 // Importar rutas
 app.use("/api/usuarios", require("./routes/usuarios"));
